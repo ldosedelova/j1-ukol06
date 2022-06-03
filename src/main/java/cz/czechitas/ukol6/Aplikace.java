@@ -14,10 +14,10 @@ public class Aplikace extends JFrame {
     private JLabel pocetHlavLabel;
     private JLabel pocetNohouLabel;
 
-    private JTextField husyField;
-    private JTextField kraliciField;
-    private JTextField pocetHlavField;
-    private JTextField pocetNohouField;
+    private JSpinner husySpinner;
+    private JSpinner kraliciSpinner;
+    private JSpinner pocetHlavSpinner;
+    private JSpinner pocetNohouSpinner;
 
     private JButton vypocitatButton;
 
@@ -42,47 +42,42 @@ public class Aplikace extends JFrame {
         setLayout(new MigLayout("wrap 2", "[right]rel[50:120:150,grow,fill]"));
         setMinimumSize(new Dimension(250, 200));
 
-        husyField = new JTextField();
-        husyField.setHorizontalAlignment(JTextField.TRAILING);
+        husySpinner = new JSpinner();
         husyLabel = new JLabel("Husy");
         husyLabel.setDisplayedMnemonic('H');
-        husyLabel.setLabelFor(husyField);
+        husyLabel.setLabelFor(husySpinner);
         add(husyLabel);
-        add(husyField);
+        add(husySpinner);
 
-        kraliciField = new JTextField();
-        kraliciField.setHorizontalAlignment(JTextField.TRAILING);
+        kraliciSpinner = new JSpinner();
         kraliciLabel = new JLabel("Králíci");
         kraliciLabel.setDisplayedMnemonic('K');
-        kraliciLabel.setLabelFor(kraliciField);
+        kraliciLabel.setLabelFor(kraliciSpinner);
         add(kraliciLabel);
-        add(kraliciField);
+        add(kraliciSpinner);
 
         add(createButtonBar(),"center, span");
 
-        pocetHlavField = new JTextField();
-        pocetHlavField.setHorizontalAlignment(JTextField.TRAILING);
+        pocetHlavSpinner = new JSpinner();
         pocetHlavLabel = new JLabel("Počet hlav");
         pocetHlavLabel.setDisplayedMnemonic('P');
-        pocetHlavLabel.setLabelFor(pocetHlavField);
+        pocetHlavLabel.setLabelFor(pocetHlavSpinner );
         add(pocetHlavLabel);
-        add(pocetHlavField);
-        pocetHlavField.setEditable(false);
+        add(pocetHlavSpinner);
 
-        pocetNohouField = new JTextField();
-        pocetNohouField.setHorizontalAlignment(JTextField.TRAILING);
+        pocetNohouSpinner = new JSpinner();
         pocetNohouLabel = new JLabel("Počet nohou");
         pocetNohouLabel.setDisplayedMnemonic('P');
-        pocetNohouLabel.setLabelFor(pocetHlavField);
+        pocetNohouLabel.setLabelFor(pocetNohouSpinner);
         add(pocetNohouLabel);
-        add(pocetNohouField);
-        pocetNohouField.setEditable(false);
+        add(pocetNohouSpinner);
 
         vypocitatButton.addActionListener(this::handlevypocitat);
 
         pack();
 
         getRootPane().setDefaultButton(vypocitatButton);
+
     }
 
     private JPanel createButtonBar() {
@@ -95,19 +90,15 @@ public class Aplikace extends JFrame {
     }
 
     private void handlevypocitat(ActionEvent actionEvent) {
-        String husy = husyField.getText();
-        int husyPocet = Integer.parseInt(husy);
+        int husy = (Integer) husySpinner.getValue();
+        int kralici = (Integer) kraliciSpinner.getValue();
 
-        String kralici = kraliciField.getText();
-        int kraliciPocet = Integer.parseInt(kralici);
+        int vypocetHlavPocet = husy + kralici;
+        int vypocetNohouPocet = (husy * 2) + (kralici * 4);
 
-        int vypocetHlavPocet = husyPocet + kraliciPocet;
-        int vypocetNohouPocet = (husyPocet * 2) + (kraliciPocet * 4);
-        String vypoceHlav = Integer.toString(vypocetHlavPocet);
-        String vypocetNohou = Integer.toString(vypocetNohouPocet);
+        pocetHlavSpinner.setValue(vypocetHlavPocet);
+        pocetNohouSpinner.setValue(vypocetNohouPocet);
 
-        pocetHlavField.setText(vypoceHlav);
-        pocetNohouField.setText(vypocetNohou);
     }
 
 }
