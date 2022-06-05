@@ -20,6 +20,11 @@ public class Aplikace extends JFrame {
     private JSpinner pocetNohouSpinner;
 
     private JButton vypocitatButton;
+    private JFormattedTextField nedostupnePolePocetHlav;
+    private JFormattedTextField nedostupnePolePocetNohou;
+
+    private SpinnerNumberModel mezeNumberModelHusy;
+    private SpinnerNumberModel mezeNumberModelKralici;
 
     public static void main(String[] args) {
         FlatLightLaf.setup();
@@ -42,14 +47,22 @@ public class Aplikace extends JFrame {
         setLayout(new MigLayout("wrap 2", "[right]rel[50:120:150,grow,fill]"));
         setMinimumSize(new Dimension(250, 200));
 
-        husySpinner = new JSpinner();
+        Integer value = Integer.valueOf(0);
+        Integer min = Integer.valueOf(0);
+        Integer max = Integer.valueOf(100);
+        Integer step = Integer.valueOf(1);
+
+        mezeNumberModelHusy = new SpinnerNumberModel(value, min, max, step);
+        mezeNumberModelKralici = new SpinnerNumberModel(value, min, max, step);
+
+        husySpinner = new JSpinner(mezeNumberModelHusy);
         husyLabel = new JLabel("Husy");
         husyLabel.setDisplayedMnemonic('H');
         husyLabel.setLabelFor(husySpinner);
         add(husyLabel);
         add(husySpinner);
 
-        kraliciSpinner = new JSpinner();
+        kraliciSpinner = new JSpinner(mezeNumberModelKralici);
         kraliciLabel = new JLabel("Králíci");
         kraliciLabel.setDisplayedMnemonic('K');
         kraliciLabel.setLabelFor(kraliciSpinner);
@@ -65,6 +78,11 @@ public class Aplikace extends JFrame {
         add(pocetHlavLabel);
         add(pocetHlavSpinner);
 
+        pocetHlavSpinner.setEnabled(true);
+        nedostupnePolePocetHlav =((JSpinner.DefaultEditor)pocetHlavSpinner.getEditor()).getTextField();
+        nedostupnePolePocetHlav.setEditable(false);
+        //tady nevím,jak nastavit, aby to pole nebylo editovatelné.
+
         pocetNohouSpinner = new JSpinner();
         pocetNohouLabel = new JLabel("Počet nohou");
         pocetNohouLabel.setDisplayedMnemonic('P');
@@ -72,12 +90,15 @@ public class Aplikace extends JFrame {
         add(pocetNohouLabel);
         add(pocetNohouSpinner);
 
+        pocetNohouSpinner.setEnabled(true);
+        nedostupnePolePocetNohou=((JSpinner.DefaultEditor)pocetNohouSpinner.getEditor()).getTextField();
+        nedostupnePolePocetNohou.setEditable(false);
+
         vypocitatButton.addActionListener(this::handlevypocitat);
 
         pack();
 
         getRootPane().setDefaultButton(vypocitatButton);
-
     }
 
     private JPanel createButtonBar() {
@@ -98,7 +119,6 @@ public class Aplikace extends JFrame {
 
         pocetHlavSpinner.setValue(vypocetHlavPocet);
         pocetNohouSpinner.setValue(vypocetNohouPocet);
-
     }
 
 }
